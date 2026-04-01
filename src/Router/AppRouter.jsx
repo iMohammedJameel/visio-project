@@ -8,6 +8,9 @@ import CartPage from '../pages/CartPage.jsx'
 import CheckoutPage from '../pages/CheckoutPage.jsx'
 import OrderComplete from '../pages/OrderComplete.jsx'
 import MyAccount from '../pages/MyAccount.jsx'
+import Shop from '../pages/Shop.jsx'
+
+import SignUp from '../pages/SignUp.jsx'
 
 function AppRouter() {
   return (
@@ -16,12 +19,13 @@ function AppRouter() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="product/:id" element={<ProductPage />} />
-          <Route path="cart" element={<CartPage />} />
+          <Route path="shop" element={<Shop />} />
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="order-complete" element={<OrderComplete />} />
           <Route path="account" element={<MyAccount />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   )

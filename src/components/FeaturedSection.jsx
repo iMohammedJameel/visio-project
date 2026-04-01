@@ -46,6 +46,7 @@ function ProductCard({ product, index }) {
           <img
             src={imgSrc}
             alt={product.name}
+            onError={e => { e.target.onerror=null; e.target.src=FALLBACK_IMAGES[index % FALLBACK_IMAGES.length] }}
             style={{ width: '75%', height: '75%', objectFit: 'contain' }}
           />
           <button

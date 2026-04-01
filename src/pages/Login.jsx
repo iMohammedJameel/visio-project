@@ -8,17 +8,28 @@ function Login() {
 
   const [show, setShow] = useState(false)
   const [form, setForm] = useState({ email: '', password: '' })
+  const [validationErrors, setValidationErrors] = useState({})
+
+  function validate() {
+    const errs = {}
+    if (!form.email) errs.email = 'Email is required'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'Invalid email address'
+    if (!form.password) errs.password = 'Password is required'
+    else if (form.password.length < 6) errs.password = 'Password must be at least 6 characters'
+    return errs
+  }
 
   function handleChange(field, value) {
     setForm(prev => ({ ...prev, [field]: value }))
+    setValidationErrors(prev => ({ ...prev, [field]: '' }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    const errs = validate()
+    if (Object.keys(errs).length > 0) { setValidationErrors(errs); return }
     const result = await login(form.email, form.password)
-    if (result.success) {
-      navigate('/')
-    }
+    if (result.success) navigate('/')
   }
 
   return (
@@ -28,7 +39,7 @@ function Login() {
       <div className="col-12 col-md-6 p-3 p-md-4" style={{ minHeight: 300 }}>
         <div className="position-relative h-100" style={{ minHeight: 300 }}>
           <img
-            src="https://condoresorts.com/wp-content/uploads/2022/11/Golf-Clubs-Explained-Understanding-The-Types-Of-Golf-Clubs-And-When-To-Use-Them.jpg"
+            src="/assets/images/login-img.jpg"
             alt="Interior"
             className="w-100 h-100"
             style={{ objectFit: 'cover', borderRadius: 24, display: 'block', minHeight: 300 }}
@@ -45,12 +56,11 @@ function Login() {
         <div style={{ width: '100%', maxWidth: 420 }}>
 
           <h1 className="fw-bold mb-2" style={{ fontSize: 42 }}>Sign In</h1>
-          <p className="text-muted mb-4 small">
+          <p className=" mb-4">
             Don't have an account yet?{' '}
-            <Link to="#" className="text-success fw-semibold text-decoration-none">Sign Up</Link>
+            <Link to="/signup" className="text-success fw-semibold text-decoration-none">Sign Up</Link>
           </p>
 
-          {/* Error Message */}
           {error && (
             <div className="alert alert-danger py-2 small" role="alert">
               {typeof error === 'string' ? error : 'Something went wrong, please try again.'}
@@ -66,8 +76,8 @@ function Login() {
                 type="email"
                 value={form.email}
                 onChange={e => handleChange('email', e.target.value)}
-                required
               />
+              {validationErrors.email && <div className="text-danger" style={{ fontSize: 12 }}>{validationErrors.email}</div>}
             </div>
 
             {/* Password */}
@@ -78,7 +88,6 @@ function Login() {
                 placeholder="Password"
                 value={form.password}
                 onChange={e => handleChange('password', e.target.value)}
-                required
               />
               <button
                 type="button"
@@ -86,11 +95,12 @@ function Login() {
                 onClick={() => setShow(!show)}>
                 <i className={`bi ${show ? 'bi-eye-slash' : 'bi-eye'}`}></i>
               </button>
+              {validationErrors.password && <div className="text-danger" style={{ fontSize: 12 }}>{validationErrors.password}</div>}
             </div>
 
-            {/* Remember + Forgot */}
+            {/* Forgot */}
             <div className="d-flex align-items-center justify-content-end mb-4">
-              <a href="#" className="text-dark fw-semibold small text-decoration-none">Forgot password?</a>
+              <a  className="text-dark fw-semibold small text-decoration-none">Forgot password?</a>
             </div>
 
             {/* Submit */}

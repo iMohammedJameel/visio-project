@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getCategories } from '../api/api'
 
 const FALLBACK_IMAGES = [
@@ -9,6 +10,11 @@ const FALLBACK_IMAGES = [
   '/assets/images/5.png',
   '/assets/images/1.png',
 ]
+
+function getCategoryImage(cat, index) {
+  if (cat.image) return `http://localhost:4000/${cat.image}`
+  return FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
+}
 
 function CategoriesSection() {
   const [categories, setCategories] = useState([])
@@ -22,7 +28,7 @@ function CategoriesSection() {
   }, [])
 
   const CategoryCard = ({ cat, index }) => (
-    <div>
+    <Link to={`/shop?category=${encodeURIComponent(cat.name)}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <div
         className="border-0 rounded-3 overflow-hidden text-center"
         style={{ cursor: 'pointer', transition: 'transform .25s, box-shadow .25s', backgroundColor: 'transparent' }}
@@ -38,14 +44,14 @@ function CategoriesSection() {
           className="d-flex align-items-center justify-content-center rounded-3"
           style={{ backgroundColor: '#F3F5F7', height: 200 }}>
           <img
-            src={FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]}
+            src={getCategoryImage(cat, index)}
             alt={cat.name}
             style={{ width: '75%', height: '75%', objectFit: 'contain' }}
           />
         </div>
         <div className="fw-medium mt-2">{cat.name}</div>
       </div>
-    </div>
+    </Link>
   )
 
   if (loading) {

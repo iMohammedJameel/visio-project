@@ -1,10 +1,10 @@
 import axiosInstance from './axiosInstance'
 
 export const registerUser = (data) =>
-  axiosInstance.post('/users/register', data)
+  axiosInstance.post('/auth/register', data)
 
 export const loginUser = (data) =>
-  axiosInstance.post('/users/login', data)
+  axiosInstance.post('/auth/login', data)
 
 export const getProducts = (page = 1, limit = 10) =>
   axiosInstance.get(`/products?page=${page}&limit=${limit}`)

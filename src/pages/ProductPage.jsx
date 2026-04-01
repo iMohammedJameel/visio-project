@@ -3,16 +3,8 @@ import { useParams } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
 import { getProductById } from '../api/api'
 
-const EXTRA_IMAGES = [
-  'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80',
-  'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=800&q=80',
-]
 
-const DEFAULT_COLORS = [
-  { name: 'Black', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=100&q=70' },
-  { name: 'Brown', image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=100&q=70' },
-  { name: 'White', image: 'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=100&q=70' },
-]
+
 
 const reviews = Array.from({ length: 5 }, (_, i) => ({
   id: i + 1,
@@ -97,7 +89,7 @@ function ProductPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [activeImg, setActiveImg] = useState(0)
-  const [activeColor, setActiveColor] = useState('Black')
+  const [activeColor, setActiveColor] = useState(0)
   const [qty, setQty] = useState(1)
   const [activeTab, setActiveTab] = useState('reviews')
   const [wishlist, setWishlist] = useState(false)
@@ -134,7 +126,8 @@ function ProductPage() {
     ? `http://localhost:4000/${product.image}`
     : 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80'
 
-  const images = [mainImage, ...EXTRA_IMAGES]
+  const images = [mainImage, ...(product.images || [])]
+  const colorImages = images.map((img, i) => ({ name: `View ${i + 1}`, image: img }))
 
   const handleAdd = () => {
     addItem({
@@ -228,13 +221,13 @@ function ProductPage() {
               <small className="text-uppercase text-muted fw-semibold d-block mb-1" style={{ letterSpacing: .5 }}>
                 Choose Color <i className="bi bi-chevron-right" style={{ fontSize: 10 }}></i>
               </small>
-              <div className="fw-medium mb-2">{activeColor}</div>
+              <div className="fw-medium mb-2">{colorImages[activeColor]?.name}</div>
               <div className="d-flex gap-2">
-                {DEFAULT_COLORS.map(c => (
+                {colorImages.map((c, i) => (
                   <div
-                    key={c.name}
-                    onClick={() => setActiveColor(c.name)}
-                    style={{ cursor: 'pointer', width: 52, height: 52, borderRadius: 8, overflow: 'hidden', border: `2px solid ${activeColor === c.name ? '#212529' : 'transparent'}`, transition: 'border-color .2s,transform .15s', transform: activeColor === c.name ? 'scale(1.05)' : 'none' }}>
+                    key={i}
+                    onClick={() => { setActiveColor(i); setActiveImg(i) }}
+                    style={{ cursor: 'pointer', width: 52, height: 52, borderRadius: 8, overflow: 'hidden', border: `2px solid ${activeColor === i ? '#212529' : 'transparent'}`, transition: 'border-color .2s,transform .15s', transform: activeColor === i ? 'scale(1.05)' : 'none' }}>
                     <img src={c.image} alt={c.name} className="w-100 h-100" style={{ objectFit: 'cover' }} />
                   </div>
                 ))}

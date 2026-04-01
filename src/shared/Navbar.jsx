@@ -8,6 +8,7 @@ function Navbar() {
   const { isLoggedIn, logout, user } = useAuth()
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const handleAccount = e => {
     e.preventDefault()
@@ -39,17 +40,25 @@ function Navbar() {
           <a href="#" className="text-dark fs-5"><i className="bi bi-search"></i></a>
 
           {isLoggedIn ? (
-            <div className="dropdown">
-              <a href="#" className="text-dark fs-5 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
-                style={{ textDecoration: 'none' }}>
+            <div className="position-relative">
+              <a href="#" className="text-dark fs-5" style={{ textDecoration: 'none' }}
+                onClick={e => { e.preventDefault(); setDropdownOpen(o => !o) }}>
                 <i className="bi bi-person-check"></i>
               </a>
-              <ul className="dropdown-menu dropdown-menu-end">
-                <li><span className="dropdown-item-text small text-muted">{user?.email}</span></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><a className="dropdown-item" href="#" onClick={e => { e.preventDefault(); navigate('/account') }}>My Account</a></li>
-                <li><a className="dropdown-item text-danger" href="#" onClick={handleLogout}>Log Out</a></li>
-              </ul>
+              {dropdownOpen && (
+                <>
+                  <div className="position-fixed top-0 start-0 w-100 h-100" style={{ zIndex: 999 }}
+                    onClick={() => setDropdownOpen(false)}></div>
+                  <ul className="position-absolute bg-white border rounded shadow-sm py-1" style={{ right: 0, top: '100%', minWidth: 180, zIndex: 1000, listStyle: 'none', margin: 0, padding: 0 }}>
+                    <li><span className="d-block px-3 py-2 small text-muted">{user?.email}</span></li>
+                    <li><hr className="my-1" /></li>
+                    <li><a className="d-block px-3 py-2 small text-dark text-decoration-none" href="#"
+                      onClick={e => { e.preventDefault(); setDropdownOpen(false); navigate('/account') }}>My Account</a></li>
+                    <li><a className="d-block px-3 py-2 small text-danger text-decoration-none" href="#"
+                      onClick={e => { handleLogout(e); setDropdownOpen(false) }}>Log Out</a></li>
+                  </ul>
+                </>
+              )}
             </div>
           ) : (
             <a href="#" onClick={handleAccount} className="text-dark fs-5">
@@ -87,7 +96,7 @@ function Navbar() {
         <div className="collapse navbar-collapse d-none d-md-flex" id="navMenu">
           <ul className="navbar-nav mx-auto mb-2 mb-md-0">
             <li className="nav-item"><Link to="/" className="nav-link px-3 fw-medium" style={{ fontSize: 14 }}>Home</Link></li>
-            <li className="nav-item"><a href="#" className="nav-link px-3 fw-medium" style={{ fontSize: 14 }}>Shop <i className="bi bi-chevron-down" style={{ fontSize: 10 }}></i></a></li>
+            <li className="nav-item"><Link to="/shop" className="nav-link px-3 fw-medium" style={{ fontSize: 14 }}>Shop <i className="bi bi-chevron-down" style={{ fontSize: 10 }}></i></Link></li>
             <li className="nav-item"><a href="#" className="nav-link px-3 fw-medium" style={{ fontSize: 14 }}>Products <i className="bi bi-chevron-down" style={{ fontSize: 10 }}></i></a></li>
             <li className="nav-item"><a href="#" className="nav-link px-3 fw-medium" style={{ fontSize: 14 }}>Contact Us</a></li>
           </ul>
@@ -100,10 +109,10 @@ function Navbar() {
           style={{ position: 'absolute', top: '100%', left: 0, zIndex: 1000, boxShadow: '0 8px 24px rgba(0,0,0,.1)' }}>
           <div className="container py-3">
             <ul className="list-unstyled mb-3">
-              {['Home', 'Shop', 'Products', 'Contact Us'].map(l => (
-                <li key={l} className="border-bottom">
-                  <a href="#" className="d-block py-3 text-dark text-decoration-none fw-medium" style={{ fontSize: 15 }}
-                    onClick={() => setMenuOpen(false)}>{l}</a>
+              {[{ label: 'Home', to: '/' }, { label: 'Shop ▾', to: '/shop' }, { label: 'Products', to: '#' }, { label: 'Contact Us', to: '#' }].map(({ label, to }) => (
+                <li key={label} className="border-bottom">
+                  <Link to={to} className="d-block py-3 text-dark text-decoration-none fw-medium" style={{ fontSize: 15 }}
+                    onClick={() => setMenuOpen(false)}>{label}</Link>
                 </li>
               ))}
             </ul>
