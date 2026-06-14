@@ -9,6 +9,20 @@ A modern e-commerce storefront for a golf & furniture store, built with React + 
 
 ---
 
+## 🖼️ Preview
+
+<div align="center">
+
+| | | |
+|:---:|:---:|:---:|
+| ![](https://raw.githubusercontent.com/iMohammedJameel/visio-project/main/assets/Screenshot%202026-06-14%20154642.png) | ![](https://raw.githubusercontent.com/iMohammedJameel/visio-project/main/assets/Screenshot%202026-06-14%20154804.png) | ![](https://raw.githubusercontent.com/iMohammedJameel/visio-project/main/assets/Screenshot%202026-06-14%20154824.png) |
+| ![](https://raw.githubusercontent.com/iMohammedJameel/visio-project/main/assets/Screenshot%202026-06-14%20154841.png) | ![](https://raw.githubusercontent.com/iMohammedJameel/visio-project/main/assets/Screenshot%202026-06-14%20154853.png) | ![](https://raw.githubusercontent.com/iMohammedJameel/visio-project/main/assets/Screenshot%202026-06-14%20154908.png) |
+| ![](https://raw.githubusercontent.com/iMohammedJameel/visio-project/main/assets/Screenshot%202026-06-14%20154914.png) | ![](https://raw.githubusercontent.com/iMohammedJameel/visio-project/main/assets/Screenshot%202026-06-14%20154926.png) | |
+
+</div>
+
+---
+
 ## ✨ Features
 
 - 🏠 **Home Page** — Hero section, featured products, categories, promo banner, collections, articles, newsletter & Instagram feed
